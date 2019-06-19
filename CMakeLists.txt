@@ -13,6 +13,24 @@ set(PROJECT_NAME shadowsocksr-native)
 set(RELEASE_DATE 2015-09-03)
 project(${PROJECT_NAME} VERSION 0.6.0 LANGUAGES C)
 
+####################################################################
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
+
+# Android 5.0 以上需要在此处设置 PIE
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIE")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fPIE -pie")
+# 配置使用 NDK Standalone Toolchain 编译
+set(NDK_STANDALONE_TOOLCHAIN ~/app/ndk_toolchain)
+set(CMAKE_SYSTEM_NAME AndroidARM)
+set(CMAKE_SYSTEM_VERSION 3)
+set(CMAKE_C_COMPILER ${NDK_STANDALONE_TOOLCHAIN}/arm-linux-androideabi/bin/gcc)
+set(CMAKE_CXX_COMPILER ${NDK_STANDALONE_TOOLCHAIN}/arm-linux-androideabi/bin/g++)
+set(CMAKE_FIND_ROOT_PATH ${NDK_STANDALONE_TOOLCHAIN})
+
+# 使用 NDK 提供的头文件
+add_definitions("--sysroot=${NDK_STANDALONE_TOOLCHAIN}/sysroot")
+####################################################################
+
 set(with_crypto_library "mbedtls" CACHE STRING "build with the given crypto library, TYPE=mbedtls")
 
 add_subdirectory(depends/mbedtls)
