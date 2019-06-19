@@ -11,25 +11,37 @@ set(CMAKE_LEGACY_CYGWIN_WIN32 0)
 cmake_minimum_required(VERSION 3.0)
 set(PROJECT_NAME shadowsocksr-native)
 set(RELEASE_DATE 2015-09-03)
-project(${PROJECT_NAME} VERSION 0.6.0 LANGUAGES C)
+
 
 ####################################################################
+set(CMAKE_SYSTEM_NAME AndroidORB2gOS)
+
+set(CMAKE_SYSTEM_VERSION 21) # API level
+
+set(CMAKE_ANDROID_ARCH_ABI armeabi-v7a)
+
+set(CMAKE_ANDROID_NDK /path/to/android-ndk)
+
+set(CMAKE_ANDROID_STL_TYPE gnustl_static)
+
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
 
 # Android 5.0 以上需要在此处设置 PIE
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIE")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fPIE -pie")
 # 配置使用 NDK Standalone Toolchain 编译
-set(NDK_STANDALONE_TOOLCHAIN ~/app/ndk_toolchain)
-set(CMAKE_SYSTEM_NAME AndroidARM)
-set(CMAKE_SYSTEM_VERSION 3)
-set(CMAKE_C_COMPILER ${NDK_STANDALONE_TOOLCHAIN}/arm-linux-androideabi/bin/gcc)
-set(CMAKE_CXX_COMPILER ${NDK_STANDALONE_TOOLCHAIN}/arm-linux-androideabi/bin/g++)
-set(CMAKE_FIND_ROOT_PATH ${NDK_STANDALONE_TOOLCHAIN})
+#set(NDK_STANDALONE_TOOLCHAIN ~/app/ndk_toolchain)
+#set(CMAKE_SYSTEM_NAME AndroidARM)
+#set(CMAKE_SYSTEM_VERSION 3)
+#set(CMAKE_C_COMPILER ${NDK_STANDALONE_TOOLCHAIN}/arm-linux-androideabi/bin/gcc)
+#set(CMAKE_CXX_COMPILER ${NDK_STANDALONE_TOOLCHAIN}/arm-linux-androideabi/bin/g++)
+#set(CMAKE_FIND_ROOT_PATH ${NDK_STANDALONE_TOOLCHAIN})
 
 # 使用 NDK 提供的头文件
-add_definitions("--sysroot=${NDK_STANDALONE_TOOLCHAIN}/sysroot")
+add_definitions("--sysroot=${CMAKE_ANDROID_NDK}/sysroot")
 ####################################################################
+
+project(${PROJECT_NAME} VERSION 0.6.0 LANGUAGES C)
 
 set(with_crypto_library "mbedtls" CACHE STRING "build with the given crypto library, TYPE=mbedtls")
 
